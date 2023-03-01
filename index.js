@@ -271,7 +271,7 @@ function largerThan(arr, num) {
 function generatesId(num) {
     const charList = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let res = ""
-    for(let i=0; i<num; i++) {
+    for (let i = 0; i < num; i++) {
         const randomChar = Math.floor(Math.random() * charList.length);
         res += charList.charAt(randomChar);
     }
@@ -282,15 +282,33 @@ function generatesId(num) {
 // combinations in an array.
 // Sample array: [1, 2, 3] and subset length is 2
 // Expected output: [[2, 1], [3, 1], [3, 2]]
-function getSubsets(arr, length) {
+function getSubsets(arr, k) {
+    const subsets = [];
 
+    for (let i = 0; i < arr.length; i++) {
+        const firstElement = arr[i];
+        for (let j = i + 1; j < arr.length; j++) {
+            const secondElement = arr[j];
+            if (!subsets.includes([firstElement, secondElement])) {
+                subsets.push([firstElement, secondElement]);
+            }
+        }
+    }
+
+    return subsets;
 }
 
 // 22. Write a JavaScript function that accepts two arguments, a string and a letter and the function
 // will count the number of occurrences of the specified letter within the string.
 // Sample arguments: 'microsoft.com', 'o'
 // Expected output: 3
-
+function countLetters(str, char) {
+    let count = 0;
+    for (let i = 0; i < str.length; i++) {
+        if (str.charAt(i) == char) count++;
+    }
+    return count;
+}
 
 // 23. Write a JavaScript function to find the first not repeated character.
 // Sample arguments: 'abacddbec'
@@ -299,10 +317,10 @@ function firstNotRepeated(str) {
     for (let i = 0; i < str.length; i++) {
         let char = str.charAt(i);
         if (str.indexOf(char) == i && str.indexOf(char, i + 1) == -1) {
-          return char;
+            return char;
         }
-      }
-      return null;
+    }
+    return null;
 }
 
 
@@ -314,12 +332,12 @@ function firstNotRepeated(str) {
 // Expected output: [3223, 546, 455, 345, 234, 213, 122, 98, 84, 64, 23, 12, 9, 4, 1]
 function bubbleSort(arr) {
     let len = arr.length;
-    for(let i=0; i<len; i++) {
-        for(let j=0; j<len-i-1; j++) {
-            if(arr[j] < arr[j+1]) {
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len - i - 1; j++) {
+            if (arr[j] < arr[j + 1]) {
                 let temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
             }
         }
     }
@@ -332,8 +350,8 @@ function bubbleSort(arr) {
 // Expected output: "United States of America"
 function longestName(arr) {
     let longest = '';
-    for(let i of arr) {
-        if(i.length > longest.length) {
+    for (let i of arr) {
+        if (i.length > longest.length) {
             longest = i;
         }
     }
@@ -342,7 +360,22 @@ function longestName(arr) {
 
 // 26. Write a JavaScript function to find longest substring in a given a string without repeating
 // characters.
-
+function longestSubstring(str) {
+    let longest = '';
+    let current = '';
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charAt(i);
+        const index = current.indexOf(char);
+        if (index >= 0) {
+            current = current.substring(index + 1);
+        }
+        current += char;
+        if (current.length > longest.length) {
+            longest = current;
+        }
+    }
+    return longest;
+}
 
 // 27. Write a JavaScript function that returns the longest palindrome in a given string.
 // Note: According to Wikipedia "In computer science, the longest palindromic substring or longest
@@ -356,11 +389,24 @@ function longestName(arr) {
 // substrings) rather than returning only one substring or returning the maximum length of a
 // palindromic substring.
 
+// use checkPalindrome(x) fron Q2 to check palindrome
+function longestPalindrome(str) {
+    let longest = ''
+    for (let i = 0; i < str.length; i++) {
+        for (let j = i + 1; j < str.length; j++) {
+            let subString = str.slice(i, j);
+            if (checkPalindrome(subString) && subString.length > longest.length) {
+                longest = subString;
+            }
+        }
+    }
+    return longest;
+}
 
 // 28. Write a JavaScript program to pass a 'JavaScript function' as parameter.
 function callFunction(func) {
     func();
-  }
+}
 
 // 29. Write a JavaScript function to get the function name. 
 function getName(func) {
